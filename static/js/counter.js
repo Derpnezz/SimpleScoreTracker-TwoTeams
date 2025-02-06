@@ -70,16 +70,34 @@ document.addEventListener('DOMContentLoaded', function() {
     redSide.addEventListener('touchend', (e) => {
         endPress();
         if (!isLongPress) {
+            handleTap(redScore, 'red');
+        }
+    });
+
+    // Function to handle tap with Promise.race
+    function handleTap(scoreElement, side) {
+        const doubleTapPromise = new Promise((resolve) => {
             const currentTime = new Date().getTime();
             const tapLength = currentTime - lastTap;
             if (tapLength < 300 && tapLength > 0) {
-                decreaseScore(redScore, 'red');
-            } else {
-                increaseScore(redScore, 'red');
+                resolve(true);
             }
             lastTap = currentTime;
-        }
-    });
+        });
+
+        const timeoutPromise = new Promise((resolve) => {
+            setTimeout(() => resolve(false), 300);
+        });
+
+        Promise.race([doubleTapPromise, timeoutPromise])
+            .then(isDoubleTap => {
+                if (isDoubleTap) {
+                    decreaseScore(scoreElement, side);
+                } else {
+                    increaseScore(scoreElement, side);
+                }
+            });
+    }
 
     // Handle events for blue side
     blueSide.addEventListener('mousedown', () => startPress(blueScore, 'blue'));
@@ -88,14 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
     blueSide.addEventListener('touchend', (e) => {
         endPress();
         if (!isLongPress) {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            if (tapLength < 300 && tapLength > 0) {
-                decreaseScore(blueScore, 'blue');
-            } else {
-                increaseScore(blueScore, 'blue');
-            }
-            lastTap = currentTime;
+            handleTap(blueScore, 'blue');
         }
     });
 
