@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const noSleep = new NoSleep();
+    document.addEventListener('click', function enableNoSleep() {
+        noSleep.enable();
+        document.removeEventListener('click', enableNoSleep);
+    });
+
     const redScore = document.getElementById('red-score');
     const blueScore = document.getElementById('blue-score');
     const redSide = document.getElementById('red-side');
