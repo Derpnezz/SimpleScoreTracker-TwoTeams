@@ -30,16 +30,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to handle score decrease
     function decreaseScore(scoreElement, side) {
         if (side === 'red' && redCount > 0) {
-            redCount--;
+            redCount -= 2;
             scoreElement.textContent = redCount;
         } else if (side === 'blue' && blueCount > 0) {
-            blueCount--;
+            blueCount -= 2;
             scoreElement.textContent = blueCount;
         }
     }
 
     // Function to handle long press reset
-    function startPress(scoreElement) {
+    function startPress(scoreElement, side) {
         isLongPress = false;
         pressTimer = setTimeout(() => {
             // Reset both scores
@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle events for red side
-    redSide.addEventListener('mousedown', () => startPress(redScore));
-    redSide.addEventListener('touchstart', () => startPress(redScore));
+    redSide.addEventListener('mousedown', () => startPress(redScore, 'red'));
+    redSide.addEventListener('touchstart', () => startPress(redScore, 'red'));
     redSide.addEventListener('mouseup', () => endPress());
     redSide.addEventListener('touchend', (e) => {
         endPress();
@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle events for blue side
-    blueSide.addEventListener('mousedown', () => startPress(blueScore));
-    blueSide.addEventListener('touchstart', () => startPress(blueScore));
+    blueSide.addEventListener('mousedown', () => startPress(blueScore, 'blue'));
+    blueSide.addEventListener('touchstart', () => startPress(blueScore, 'blue'));
     blueSide.addEventListener('mouseup', () => endPress());
     blueSide.addEventListener('touchend', (e) => {
         endPress();
