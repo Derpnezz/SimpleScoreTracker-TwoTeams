@@ -79,27 +79,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTap;
         
-        const doubleTapPromise = new Promise((resolve) => {
-            if (tapLength < 300 && tapLength > 0) {
-                resolve(true);
-            } else {
-                resolve(false);
-            }
-        });
-
-        const timeoutPromise = new Promise((resolve) => {
-            setTimeout(() => resolve(false), 300);
-        });
-
-        Promise.race([doubleTapPromise, timeoutPromise])
-            .then(isDoubleTap => {
-                if (isDoubleTap) {
-                    decreaseScore(scoreElement, side);
-                } else {
+        if (tapLength < 300 && tapLength > 0) {
+            decreaseScore(scoreElement, side);
+            lastTap = 0; // Reset lastTap to prevent further double tap detection
+        } else {
+            // Wait to see if this is part of a double tap
+            setTimeout(() => {
+                const newTapLength = new Date().getTime() - currentTime;
+                if (newTapLength >= 300) {
+                    // No double tap occurred, safe to increase score
                     increaseScore(scoreElement, side);
                 }
-                lastTap = currentTime;
-            });
+            }, 300);
+            lastTap = currentTime;
+        }
     }
 
     // Disable right click
