@@ -1,3 +1,13 @@
+#keep-awake-touch {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 1px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
 /* Force landscape orientation */
 @media screen and (orientation: portrait) {
     .score-container {

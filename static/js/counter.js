@@ -1,9 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const noSleep = new NoSleep();
-    document.addEventListener('click', function enableNoSleep() {
-        noSleep.enable();
-        document.removeEventListener('click', enableNoSleep);
-    });
+    // Keep screen awake with periodic touches
+    const keepAwakeElement = document.getElementById('keep-awake-touch');
+    setInterval(() => {
+        const touch = new Touch({
+            identifier: Date.now(),
+            target: keepAwakeElement,
+            clientX: 0,
+            clientY: 0,
+            radiusX: 2,
+            radiusY: 2,
+            force: 1
+        });
+        
+        const touchEvent = new TouchEvent('touchstart', {
+            touches: [touch],
+            targetTouches: [touch],
+            changedTouches: [touch],
+            bubbles: true,
+            cancelable: true
+        });
+        
+        keepAwakeElement.dispatchEvent(touchEvent);
+    }, 30000); // Touch every 30 seconds
 
     const redScore = document.getElementById('red-score');
     const blueScore = document.getElementById('blue-score');
