@@ -30,10 +30,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to handle score decrease
     function decreaseScore(scoreElement, side) {
         if (side === 'red' && redCount > 0) {
-            redCount -= 2;
+            redCount--;
             scoreElement.textContent = redCount;
         } else if (side === 'blue' && blueCount > 0) {
-            blueCount -= 2;
+            blueCount--;
             scoreElement.textContent = blueCount;
         }
     }
