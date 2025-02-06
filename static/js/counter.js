@@ -80,18 +80,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const tapLength = currentTime - lastTap;
         
         if (tapLength < 300 && tapLength > 0) {
+            // This is a double tap
             decreaseScore(scoreElement, side);
-            lastTap = 0; // Reset lastTap to prevent further double tap detection
+            lastTap = 0; // Reset lastTap
         } else {
-            // Wait to see if this is part of a double tap
-            setTimeout(() => {
-                const newTapLength = new Date().getTime() - currentTime;
-                if (newTapLength >= 300) {
-                    // No double tap occurred, safe to increase score
+            const tapTime = currentTime;
+            // Wait to see if another tap occurs
+            Promise.race([
+                new Promise(resolve => {
+                    setTimeout(() => resolve('timeout'), 300);
+                }),
+                new Promise(resolve => {
+                    lastTap = tapTime;
+                })
+            ]).then(result => {
+                if (result === 'timeout' && lastTap === tapTime) {
+                    // No second tap occurred
                     increaseScore(scoreElement, side);
                 }
-            }, 300);
-            lastTap = currentTime;
+            });
         }
     }
 
