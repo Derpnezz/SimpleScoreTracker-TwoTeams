@@ -5,7 +5,8 @@ channel = "stable-24_05"
 
 [deployment]
 deploymentTarget = "static"
-publicDir = "./"
+publicDir = "templates"
+run = ["sh", "-c", "python main.py"]
 
 [workflows]
 runButton = "Project"
