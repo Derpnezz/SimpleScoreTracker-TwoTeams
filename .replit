@@ -6,6 +6,7 @@ channel = "stable-24_05"
 [deployment]
 deploymentTarget = "static"
 publicDir = "templates"
+run = ["sh", "-c", "python main.py"]
 
 [workflows]
 runButton = "Project"
@@ -19,8 +20,27 @@ author = "agent"
 task = "workflow.run"
 args = "Flask Server"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Static Server"
+
 [[workflows.workflow]]
 name = "Flask Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Static Server"
 author = "agent"
 
 [workflows.workflow.metadata]
