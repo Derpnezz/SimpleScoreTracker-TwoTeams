@@ -54,6 +54,9 @@ body {
     display: flex;
     width: 100vw;
     height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .score-half {
@@ -66,6 +69,8 @@ body {
     transition: transform 0.1s ease;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    min-height: 100%;
+    min-width: 50%;
 }
 
 .score-half:active {
