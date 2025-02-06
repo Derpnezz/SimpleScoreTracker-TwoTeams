@@ -6,6 +6,10 @@
     <title>Score Counter</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#3b7fff">
+    <link rel="icon" type="image/svg+xml" href="static/icons/icon-192x192.svg">
+    <link rel="apple-touch-icon" href="static/icons/icon-192x192.svg">
 </head>
 <body>
     <div class="orientation-message">
@@ -16,7 +20,7 @@
             <path d="M15 12l-6-6"></path>
         </svg>
     </div>
-    
+
     <div class="score-container">
         <div class="score-half red" id="red-side">
             <div class="score" id="red-score">0</div>
@@ -28,6 +32,20 @@
         </div>
     </div>
 
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/js/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
     <script src="static/js/counter.js"></script>
 </body>
 </html>
