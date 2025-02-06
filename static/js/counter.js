@@ -39,21 +39,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to handle long press reset
-    function startPress(scoreElement, side) {
+    function startPress(scoreElement) {
         isLongPress = false;
         pressTimer = setTimeout(() => {
-            if (side === 'red') {
-                redCount = 0;
-                scoreElement.textContent = '0';
-            } else {
-                blueCount = 0;
-                scoreElement.textContent = '0';
-            }
+            // Reset both scores
+            redCount = 0;
+            blueCount = 0;
+            redScore.textContent = '0';
+            blueScore.textContent = '0';
             isLongPress = true;
-            // Add feedback animation for reset
-            scoreElement.style.transform = 'scale(0.8)';
+
+            // Add feedback animation for reset on both sides
+            redScore.style.transform = 'scale(0.8)';
+            blueScore.style.transform = 'scale(0.8)';
             setTimeout(() => {
-                scoreElement.style.transform = 'scale(1)';
+                redScore.style.transform = 'scale(1)';
+                blueScore.style.transform = 'scale(1)';
             }, 200);
         }, 3000); // 3 seconds for reset
     }
@@ -63,8 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle events for red side
-    redSide.addEventListener('mousedown', () => startPress(redScore, 'red'));
-    redSide.addEventListener('touchstart', () => startPress(redScore, 'red'));
+    redSide.addEventListener('mousedown', () => startPress(redScore));
+    redSide.addEventListener('touchstart', () => startPress(redScore));
     redSide.addEventListener('mouseup', () => endPress());
     redSide.addEventListener('touchend', (e) => {
         endPress();
@@ -81,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle events for blue side
-    blueSide.addEventListener('mousedown', () => startPress(blueScore, 'blue'));
-    blueSide.addEventListener('touchstart', () => startPress(blueScore, 'blue'));
+    blueSide.addEventListener('mousedown', () => startPress(blueScore));
+    blueSide.addEventListener('touchstart', () => startPress(blueScore));
     blueSide.addEventListener('mouseup', () => endPress());
     blueSide.addEventListener('touchend', (e) => {
         endPress();
