@@ -76,13 +76,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to handle tap with Promise.race
     function handleTap(scoreElement, side) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        
         const doubleTapPromise = new Promise((resolve) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
             if (tapLength < 300 && tapLength > 0) {
                 resolve(true);
+            } else {
+                resolve(false);
             }
-            lastTap = currentTime;
         });
 
         const timeoutPromise = new Promise((resolve) => {
@@ -96,8 +98,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     increaseScore(scoreElement, side);
                 }
+                lastTap = currentTime;
             });
     }
+
+    // Disable right click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
 
     // Handle events for blue side
     blueSide.addEventListener('mousedown', () => startPress(blueScore, 'blue'));
